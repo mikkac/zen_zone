@@ -1,4 +1,4 @@
-package zen.zone.ui.notifications;
+package zen.zone.ui.meditation;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,22 +10,22 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import zen.zone.databinding.FragmentNotificationsBinding;
+import zen.zone.databinding.FragmentMeditationBinding;
 
-public class NotificationsFragment extends Fragment {
+public class MeditationFragment extends Fragment {
 
-    private FragmentNotificationsBinding binding;
+    private FragmentMeditationBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        NotificationsViewModel notificationsViewModel =
-                new ViewModelProvider(this).get(NotificationsViewModel.class);
+        MeditationViewModel meditationViewModel =
+                new ViewModelProvider(this).get(MeditationViewModel.class);
 
-        binding = FragmentNotificationsBinding.inflate(inflater, container, false);
+        binding = FragmentMeditationBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textNotifications;
-        notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        final TextView textView = binding.textDashboard;
+        meditationViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
