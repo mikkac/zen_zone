@@ -2,21 +2,213 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/moti"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.preferences.PreferencesFragment">
 
+    <ImageButton
+        android:id="@+id/imageButton_gb"
+        style="@android:style/Widget.DeviceDefault.ImageButton"
+        android:layout_width="65dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="108dp"
+        android:contentDescription="English "
+        android:cropToPadding="false"
+        android:src="@drawable/united_kingdom_flag_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_language" />
+
+    <CheckBox
+        android:id="@+id/checkBox_sunday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toEndOf="@+id/checkBox_saturday"
+        app:layout_constraintTop_toBottomOf="@+id/text_reminder"
+        tools:text="Su" />
+
+    <CheckBox
+        android:id="@+id/checkBox_saturday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toEndOf="@+id/checkBox_friday"
+        app:layout_constraintTop_toBottomOf="@+id/text_reminder"
+        tools:text="S" />
+
+    <CheckBox
+        android:id="@+id/checkBox_friday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toEndOf="@+id/checkBox_thursday"
+        app:layout_constraintTop_toBottomOf="@+id/text_reminder"
+        tools:text="F" />
+
+    <CheckBox
+        android:id="@+id/checkBox_thursday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toEndOf="@+id/checkBox_wednesday"
+        app:layout_constraintTop_toBottomOf="@+id/text_reminder"
+        tools:text="Th" />
+
     <TextView
-        android:id="@+id/text_notifications"
+        android:id="@+id/text_preferences"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:textAlignment="center"
+        android:textAlignment="textStart"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.1"
+        tools:text="Preferences" />
+
+    <TextView
+        android:id="@+id/text_reminder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:textAlignment="textStart"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.196"
+        tools:text="Reminder" />
+
+    <TextView
+        android:id="@+id/text_language"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:textAlignment="textStart"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.406"
+        tools:text="Language" />
+
+    <TextView
+        android:id="@+id/text_motive"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:textAlignment="textStart"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.545"
+        tools:text="Motive" />
+
+    <CheckBox
+        android:id="@+id/checkBox_monday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_reminder"
+        tools:text="M" />
+
+    <CheckBox
+        android:id="@+id/checkBox_tuesday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toEndOf="@+id/checkBox_monday"
+        app:layout_constraintTop_toBottomOf="@+id/text_reminder"
+        tools:text="T" />
+
+    <CheckBox
+        android:id="@+id/checkBox_wednesday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toEndOf="@+id/checkBox_tuesday"
+        app:layout_constraintTop_toBottomOf="@+id/text_reminder"
+        tools:text="W" />
+
+    <EditText
+        android:id="@+id/editTextTime"
+        android:layout_width="204dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="101dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="101dp"
+        android:autofillHints="00:00"
+        android:ems="10"
+        android:inputType="time"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBox_saturday"
+        tools:ignore="LabelFor"
+        tools:text="00:00" />
+
+    <ImageButton
+        android:id="@+id/imageButton_poland"
+        style="@android:style/Widget.DeviceDefault.ImageButton"
+        android:layout_width="65dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="108dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="Polish"
+        android:cropToPadding="false"
+        android:src="@drawable/poland_flag_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_language" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup_motive"
+        android:layout_width="217dp"
+        android:layout_height="99dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_motive">
+
+        <RadioButton
+            android:id="@+id/radioButton_light"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            tools:text="Light" />
+
+        <RadioButton
+            android:id="@+id/radioButton_dark"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            tools:text="Dark" />
+    </RadioGroup>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
