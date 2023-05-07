@@ -7,9 +7,13 @@
 
     <fragment
         android:id="@+id/navigation_meditation"
-        android:name="zen.zone.ui.meditation.MeditationFragment"
+        android:name="zen.zone.ui.meditation.MeditationPreferencesFragment"
         android:label="@string/title_meditation"
-        tools:layout="@layout/fragment_meditation" />
+        tools:layout="@layout/fragment_meditation_preferences" >
+        <action
+            android:id="@+id/action_meditationFragment_to_timerFragment"
+            app:destination="@id/timerFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_stats"
@@ -22,4 +26,11 @@
         android:name="zen.zone.ui.preferences.PreferencesFragment"
         android:label="@string/title_preferences"
         tools:layout="@layout/fragment_preferences" />
+
+    <fragment
+        android:id="@+id/timerFragment"
+        android:name="zen.zone.ui.meditation.MeditationTimerFragment"
+        android:label="@string/title_meditation"
+        tools:layout="@layout/fragment_meditation_timer" />
+
 </navigation>

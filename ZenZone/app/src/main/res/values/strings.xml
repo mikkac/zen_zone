@@ -3,4 +3,5 @@
     <string name="title_meditation">Meditation</string>
     <string name="title_stats">Stats</string>
     <string name="title_preferences">Preferences</string>
+    <string name="minutes">min</string>
 </resources>

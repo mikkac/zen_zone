@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="background_sounds">
+        <item>None</item>
+        <item>Ocean waves</item>
+        <item>Rain</item>
+        <item>Forest</item>
+    </string-array>
+</resources>
