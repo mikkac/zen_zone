@@ -78,13 +78,13 @@
         app:layout_constraintVertical_bias="0.1"
         tools:text="Preferences" />
 
-    <TextView
+    <EditText
         android:id="@+id/text_reminder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="180dp"
         android:textAlignment="textStart"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -210,5 +210,16 @@
             android:layout_height="50dp"
             tools:text="Dark" />
     </RadioGroup>
+
+    <Button
+        android:id="@+id/button_reminder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="29dp"
+        android:layout_marginEnd="16dp"
+        android:text="Set reminders"
+        app:layout_constraintBottom_toTopOf="@+id/checkBox_sunday"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_preferences" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
