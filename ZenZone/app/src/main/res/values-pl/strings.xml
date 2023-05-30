@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ZenZone</string>
+    <string name="title_meditation">Medytacja</string>
+    <string name="title_stats">Statystyki</string>
+    <string name="title_preferences">Preferencje</string>
+    <string name="minutes">min</string>
+</resources>

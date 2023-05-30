@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +23,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import zen.zone.R;
 import zen.zone.databinding.FragmentPreferencesBinding;
@@ -76,7 +80,26 @@ public class PreferencesFragment extends Fragment {
         Button reminderButton = view.findViewById(R.id.button_reminder);
         reminderButton.setOnClickListener(v -> saveReminderSettings());
 
+        ImageButton plButton = view.findViewById(R.id.imageButton_poland);
+        plButton.setOnClickListener(v -> changeLanguage("pl"));
+        ImageButton engButton = view.findViewById(R.id.imageButton_gb);
+        engButton.setOnClickListener(v -> changeLanguage("en"));
+
         return view;
+    }
+
+    private void changeLanguage(String languageCode) {
+        Locale locale = new Locale(languageCode);
+        Resources resources = getResources();
+        Configuration configuration = resources.getConfiguration();
+        configuration.setLocale(locale);
+        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
+
+        restartFragment();
+    }
+
+    private void restartFragment() {
+        requireActivity().recreate();
     }
 
     private void saveReminderSettings() {
