@@ -49,7 +49,8 @@ public class PreferencesFragment extends Fragment {
 
         final TextView textView = binding.textPreferences;
         preferencesViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-
+        TextView reminderText = view.findViewById(R.id.reminder);
+        reminderText.setText("Reminder");
         TextView preferencesText = view.findViewById(R.id.text_preferences);
         preferencesText.setText("Preferences");
         timeEditText = view.findViewById(R.id.text_reminder);
@@ -68,6 +69,8 @@ public class PreferencesFragment extends Fragment {
         saturday.setText("S");
         CheckBox sunday = view.findViewById(R.id.checkBox_sunday);
         sunday.setText("Su");
+        TextView languageText = view.findViewById(R.id.text_language);
+        languageText.setText("Language");
 
         dayCheckBoxes = new CheckBox[] {monday, tuesday, wednesday, thursday, friday, saturday, sunday};
         Button reminderButton = view.findViewById(R.id.button_reminder);

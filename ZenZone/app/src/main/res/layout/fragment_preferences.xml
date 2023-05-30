@@ -75,7 +75,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.1"
+        app:layout_constraintVertical_bias="0.047"
         tools:text="Preferences" />
 
     <EditText
@@ -93,7 +93,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.196"
-        tools:text="Reminder" />
+        tools:text="00:00" />
 
     <TextView
         android:id="@+id/text_language"
@@ -159,22 +159,20 @@
         app:layout_constraintTop_toBottomOf="@+id/text_reminder"
         tools:text="W" />
 
-    <EditText
-        android:id="@+id/editTextTime"
-        android:layout_width="204dp"
-        android:layout_height="54dp"
-        android:layout_marginStart="101dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="101dp"
-        android:autofillHints="00:00"
+    <TextView
+        android:id="@+id/reminder"
+        android:layout_width="226dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="14dp"
         android:ems="10"
-        android:inputType="time"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:inputType="text"
+        android:textAlignment="textStart"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox_saturday"
+        app:layout_constraintTop_toBottomOf="@+id/text_preferences"
         tools:ignore="LabelFor"
-        tools:text="00:00" />
+        tools:text="Reminder" />
 
     <ImageButton
         android:id="@+id/imageButton_poland"

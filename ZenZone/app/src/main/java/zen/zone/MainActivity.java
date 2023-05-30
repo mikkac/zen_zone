@@ -1,9 +1,6 @@
 package zen.zone;
 
-import android.content.Intent;
 import android.os.Bundle;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -11,8 +8,9 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import zen.zone.databinding.ActivityMainBinding;
-import zen.zone.ui.preferences.ReminderService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,13 +31,5 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
-
-//        Intent intent = new Intent(this, ReminderService.class);
-//        startService(intent);
     }
-
-//    public void onUpdate() {
-//        Intent intent = new Intent(this, ReminderService.class);
-//        startService(intent);
-//    }
 }
