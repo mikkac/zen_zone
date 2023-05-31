@@ -4,4 +4,7 @@
     <string name="title_stats">Stats</string>
     <string name="title_preferences">Preferences</string>
     <string name="minutes">min</string>
+    <string name="stats_btn">Send statistics</string>
+    <string name="current_streak">Your current days streak:</string>
+    <string name="longest_streak">Your longest streak:</string>
 </resources>
