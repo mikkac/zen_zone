@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -84,6 +85,13 @@ public class PreferencesFragment extends Fragment {
         plButton.setOnClickListener(v -> changeLanguage("pl"));
         ImageButton engButton = view.findViewById(R.id.imageButton_gb);
         engButton.setOnClickListener(v -> changeLanguage("en"));
+
+        TextView theme = view.findViewById(R.id.text_motive);
+        theme.setText("Theme");
+        RadioButton light = view.findViewById(R.id.radioButton_light);
+        light.setText("Light");
+        RadioButton dark = view.findViewById(R.id.radioButton_dark);
+        dark.setText("Dark");
 
         return view;
     }
