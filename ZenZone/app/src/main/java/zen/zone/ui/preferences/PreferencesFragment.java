@@ -22,6 +22,12 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -34,6 +40,7 @@ public class PreferencesFragment extends Fragment {
     private FragmentPreferencesBinding binding;
     private CheckBox[] dayCheckBoxes;
     private EditText timeEditText;
+    private AdView adView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -93,6 +100,15 @@ public class PreferencesFragment extends Fragment {
         RadioButton dark = view.findViewById(R.id.radioButton_dark);
         dark.setText("Dark");
 
+        MobileAds.initialize(requireContext(), new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+        adView = view.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
         return view;
     }
 
@@ -142,8 +158,26 @@ public class PreferencesFragment extends Fragment {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    public void onPause() {
+        if (adView != null) {
+            adView.pause();
+        }
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (adView != null) {
+            adView.resume();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (adView != null) {
+            adView.destroy();
+        }
+        super.onDestroy();
     }
 }
