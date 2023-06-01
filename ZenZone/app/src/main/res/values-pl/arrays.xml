@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="background_sounds">
+        <item>Brak</item>
+        <item>Ptaki</item>
+        <item>Deszcz</item>
+        <item>Dzwonki</item>
+    </string-array>
+</resources>
+

@@ -2,8 +2,9 @@
 <resources>
     <string-array name="background_sounds">
         <item>None</item>
-        <item>Ocean waves</item>
+        <item>Birds</item>
         <item>Rain</item>
-        <item>Forest</item>
+        <item>Chimes</item>
     </string-array>
 </resources>
+
