@@ -1,7 +1,9 @@
 package zen.zone.ui.meditation;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +21,7 @@ import androidx.navigation.Navigation;
 
 import java.util.Locale;
 
+import zen.zone.MainActivity;
 import zen.zone.R;
 
 public class MeditationTimerFragment extends Fragment {
@@ -28,6 +31,9 @@ public class MeditationTimerFragment extends Fragment {
     private LinearLayout llPausedControls;
     private CountDownTimer meditationTimer;
     private long timeLeftInMillis;
+    private long totalTimeInMillis;
+    private boolean hasHalftimePassed = false;
+    private MediaPlayer mediaPlayer;
 
     @Nullable
     @Override
@@ -41,35 +47,47 @@ public class MeditationTimerFragment extends Fragment {
         Button btnStop = view.findViewById(R.id.btn_stop);
 
         assert getArguments() != null;
-        timeLeftInMillis = getArguments().getLong("meditationDurationMillis", 5 * 60 * 1000);
-        startMeditationTimer(timeLeftInMillis);
+        timeLeftInMillis = getArguments().getLong("meditationDurationMillis", 1 * 60 * 1000);
+        totalTimeInMillis = timeLeftInMillis;
+        boolean halfTimeNotification = getArguments().getBoolean("halfTimeNotification");
+        String backgroundSound = getArguments().getString("backgroundSound");
+
+        startMeditationTimer(timeLeftInMillis, halfTimeNotification);
+        handleBackgroundSound(backgroundSound);
 
         btnPause.setOnClickListener(v -> {
             meditationTimer.cancel();
             btnPause.setVisibility(View.GONE);
             llPausedControls.setVisibility(View.VISIBLE);
+            if (mediaPlayer != null) {
+                mediaPlayer.pause();
+            }
         });
 
         btnPlay.setOnClickListener(v -> {
-            startMeditationTimer(timeLeftInMillis);
+            startMeditationTimer(timeLeftInMillis, halfTimeNotification);
             btnPause.setVisibility(View.VISIBLE);
             llPausedControls.setVisibility(View.GONE);
+            if (mediaPlayer != null) {
+                mediaPlayer.start();
+            }
         });
 
         btnStop.setOnClickListener(v -> stopMeditationAndReturnToSettings());
 
-        // Hide ActionBar
+        // Hide ActionBar and NavBar
         if (getActivity() != null) {
             ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
             if (actionBar != null) {
                 actionBar.hide();
             }
+            ((MainActivity) getActivity()).hideBottomNav();
         }
 
         return view;
     }
 
-    private void startMeditationTimer(long millisUntilFinished) {
+    private void startMeditationTimer(long millisUntilFinished, boolean halfTimeNotification) {
         meditationTimer = new CountDownTimer(millisUntilFinished, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -78,6 +96,11 @@ public class MeditationTimerFragment extends Fragment {
                 int seconds = (int) (millisUntilFinished / 1000) % 60;
                 String timeRemaining = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
                 tvTimeRemaining.setText(timeRemaining);
+
+                if (!hasHalftimePassed && halfTimeNotification && (millisUntilFinished <= totalTimeInMillis / 2)) {
+                    playBellSound();
+                    hasHalftimePassed = true;
+                }
             }
 
             @Override
@@ -93,14 +116,18 @@ public class MeditationTimerFragment extends Fragment {
         if (meditationTimer != null) {
             meditationTimer.cancel();
         }
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+        }
         Navigation.findNavController(getView()).navigate(R.id.navigation_meditation);
 
-        // Show ActionBar
+        // Show ActionBar and NavBar
         if (getActivity() != null) {
             ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
             if (actionBar != null) {
                 actionBar.show();
             }
+            ((MainActivity) getActivity()).showBottomNav();
         }
 
     }
@@ -110,4 +137,39 @@ public class MeditationTimerFragment extends Fragment {
         super.onStop();
         stopMeditationAndReturnToSettings();
     }
+
+    private void handleBackgroundSound(String backgroundSound) {
+        // Determine the resource id of the selected background sound
+        int soundResId = SoundResources.getSoundResource(backgroundSound);
+        if (soundResId != 0) {
+            // Play the selected background sound
+            playBackgroundSound(soundResId);
+        }
+    }
+
+
+    private void playBackgroundSound(int soundResId) {
+        // Release any resources from previous MediaPlayer
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+        }
+        // Create a new MediaPlayer to play this sound
+        mediaPlayer = MediaPlayer.create(this.getActivity(), soundResId);
+        mediaPlayer.setLooping(true); // Set looping
+        mediaPlayer.start();
+    }
+
+    private void playBellSound() {
+        // Create a MediaPlayer and set its resource to gong sound
+        MediaPlayer bellSound = MediaPlayer.create(getContext(), R.raw.bell);
+        bellSound.start();
+        bellSound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                mediaPlayer.release();
+            }
+        });
+    }
+Wx`
+
 }

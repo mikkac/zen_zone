@@ -4,4 +4,12 @@
     <string name="title_stats">Statystyki</string>
     <string name="title_preferences">Preferencje</string>
     <string name="minutes">min</string>
+    <string name="duration">Długość</string>
+    <string name="_1_minute">1 min</string>
+    <string name="half_time_audio_notification">Dźwięk w połowie medytacji</string>
+    <string name="background_sound">Dźwięk w tle</string>
+    <string name="start_meditation">Rozpocznij medytację</string>
+    <string name="pause">Wstrzymaj</string>
+    <string name="play">Wznów</string>
+    <string name="stop">Zakończ</string>
 </resources>
