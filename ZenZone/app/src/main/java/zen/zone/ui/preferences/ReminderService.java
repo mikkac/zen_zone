@@ -131,7 +131,7 @@ public class ReminderService extends Service {
                 .setAutoCancel(true);
 
         Intent intent = new Intent(this, MainActivity.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
         builder.setContentIntent(contentIntent);
 
         notificationManager.notify(REMINDER_NOTIFICATION_ID, builder.build());
