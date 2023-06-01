@@ -19,6 +19,7 @@ import androidx.navigation.Navigation;
 
 import java.util.Locale;
 
+import zen.zone.MainActivity;
 import zen.zone.R;
 
 public class MeditationTimerFragment extends Fragment {
@@ -58,12 +59,13 @@ public class MeditationTimerFragment extends Fragment {
 
         btnStop.setOnClickListener(v -> stopMeditationAndReturnToSettings());
 
-        // Hide ActionBar
+        // Hide ActionBar and NavBar
         if (getActivity() != null) {
             ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
             if (actionBar != null) {
                 actionBar.hide();
             }
+            ((MainActivity) getActivity()).hideBottomNav();
         }
 
         return view;
@@ -95,12 +97,13 @@ public class MeditationTimerFragment extends Fragment {
         }
         Navigation.findNavController(getView()).navigate(R.id.navigation_meditation);
 
-        // Show ActionBar
+        // Show ActionBar and NavBar
         if (getActivity() != null) {
             ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
             if (actionBar != null) {
                 actionBar.show();
             }
+            ((MainActivity) getActivity()).showBottomNav();
         }
 
     }

@@ -2,6 +2,7 @@ package zen.zone;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -18,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences sharedPrefs;
     private static int currentDayStreak;
     private static int longestStreak;
+    private ActivityMainBinding binding;
 
     public static int[] getDaysStreaks() {
         return new int[]{currentDayStreak, longestStreak};
@@ -27,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        zen.zone.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         // Passing each menu ID as a set of Ids because each
@@ -81,5 +83,13 @@ public class MainActivity extends AppCompatActivity {
                     .putInt("longestStreak", longestStreak)
                     .apply();
         }
+    }
+
+    public void hideBottomNav() {
+        binding.navView.setVisibility(View.GONE);
+    }
+
+    public void showBottomNav() {
+        binding.navView.setVisibility(View.VISIBLE);
     }
 }
