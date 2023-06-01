@@ -100,10 +100,7 @@ public class PreferencesFragment extends Fragment {
         RadioButton dark = view.findViewById(R.id.radioButton_dark);
         dark.setText("Dark");
 
-        MobileAds.initialize(requireContext(), new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
+        MobileAds.initialize(requireContext(), initializationStatus -> {
         });
         adView = view.findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -135,25 +132,29 @@ public class PreferencesFragment extends Fragment {
         }
         String time = timeEditText.getText().toString();
 
-        if(TimeValidator.isValidTime(time)) {
-            SharedPreferences sharedPreferences = this.requireContext().getSharedPreferences("ReminderPrefs", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-
-            StringBuilder daysStringBuilder = new StringBuilder();
-            for (String day : selectedDays) {
-                daysStringBuilder.append(day).append(",");
-            }
-            editor.putString("selectedDays", daysStringBuilder.toString());
-            editor.putString("selectedTime", time);
-            editor.apply();
-
-            Context context = requireContext();
-            Intent intent = new Intent(context, ReminderService.class);
-            context.startForegroundService(intent);
-
-            Toast.makeText(getContext(), "Reminders were set-up!", Toast.LENGTH_SHORT).show();
+        if (selectedDays.size() == 0) {
+            Toast.makeText(requireContext(), "You have to choose at least one day", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(getContext(), "Time format should be HH:MM", Toast.LENGTH_LONG).show();
+            if (TimeValidator.isValidTime(time)) {
+                SharedPreferences sharedPreferences = this.requireContext().getSharedPreferences("ReminderPrefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                StringBuilder daysStringBuilder = new StringBuilder();
+                for (String day : selectedDays) {
+                    daysStringBuilder.append(day).append(",");
+                }
+                editor.putString("selectedDays", daysStringBuilder.toString());
+                editor.putString("selectedTime", time);
+                editor.apply();
+
+                Context context = requireContext();
+                Intent intent = new Intent(context, ReminderService.class);
+                context.startForegroundService(intent);
+
+                Toast.makeText(getContext(), "Reminders were set-up!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "Time format should be HH:MM", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
