@@ -27,8 +27,14 @@ import zen.zone.R;
  */
 public class MeditationPreferencesFragment extends Fragment {
 
+    /**
+     * The tag used for logging.
+     */
     private static final String TAG = MeditationPreferencesFragment.class.getName();
 
+    /**
+     * Default constructor.
+     */
     public MeditationPreferencesFragment() {
         // Required empty public constructor
     }
@@ -43,11 +49,28 @@ public class MeditationPreferencesFragment extends Fragment {
         return new MeditationPreferencesFragment();
     }
 
+    /**
+     * Called when the fragment's activity has been created and this fragment's
+     * view hierarchy instantiated. It can be used to do final initialization once these pieces are in place,
+     * such as retrieving views or restoring state.
+     *
+     * @param savedInstanceState If the fragment is being re-created from a previous saved state, this is the state.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * Called to have the fragment instantiate its user interface view.
+     * This is optional, and non-graphical fragments can return null. This will be called between onCreate(Bundle) and onActivityCreated(Bundle).
+     *
+     * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's UI should be attached to. The fragment should not add the view itself, but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here.
+     *
+     * @return Return the View for the fragment's UI, or null.
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -98,8 +121,6 @@ public class MeditationPreferencesFragment extends Fragment {
                         .navigate(R.id.action_meditationFragment_to_timerFragment, args);
             }
         });
-
-
         return view;
     }
 }

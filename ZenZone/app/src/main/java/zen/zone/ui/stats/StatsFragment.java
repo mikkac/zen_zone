@@ -55,7 +55,7 @@ public class StatsFragment extends Fragment {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             String formattedDate = currentDate.format(formatter);
 
-            StorageReference screenshotRef = storageRef.child("statistics/"+ formattedDate +".png");
+            StorageReference screenshotRef = storageRef.child("statistics/" + formattedDate + ".png");
 
             // Convert the screenshot Bitmap to a byte array
             ByteArrayOutputStream baos = new ByteArrayOutputStream();

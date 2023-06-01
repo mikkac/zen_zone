@@ -28,6 +28,11 @@ import java.util.Locale;
 import zen.zone.MainActivity;
 import zen.zone.R;
 
+/**
+ * A fragment that represents the meditation timer screen.
+ * This fragment is responsible for managing the meditation timer
+ * and controlling the user's interaction with the timer.
+ */
 public class MeditationTimerFragment extends Fragment {
 
     private TextView tvTimeRemaining;
@@ -41,6 +46,11 @@ public class MeditationTimerFragment extends Fragment {
     private NotificationManager notificationManager;
     private int currentInterruptionMode;
 
+    /**
+     * Called when the fragment is being created, or when a retained
+     * fragment is being re-created.
+     * @param savedInstanceState If the fragment is being re-created from a previous saved state, this is the state.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -53,6 +63,16 @@ public class MeditationTimerFragment extends Fragment {
         }
         super.onCreate(savedInstanceState);
     }
+
+    /**
+     * Called to have the fragment instantiate its user interface view.
+     *
+     * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's UI should be attached to. The fragment should not add the view itself, but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here.
+     *
+     * @return Return the View for the fragment's UI, or null.
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -105,6 +125,12 @@ public class MeditationTimerFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Starts the meditation timer, which counts down and updates the UI each second.
+     *
+     * @param millisUntilFinished The amount of time (in milliseconds) until the timer should finish.
+     * @param halfTimeNotification Indicates whether the user wants to be notified when the timer is halfway finished.
+     */
     private void startMeditationTimer(long millisUntilFinished, boolean halfTimeNotification) {
         startNoDisturbMode();
         meditationTimer = new CountDownTimer(millisUntilFinished, 1000) {
@@ -131,6 +157,9 @@ public class MeditationTimerFragment extends Fragment {
         }.start();
     }
 
+    /**
+     * Stops the meditation and navigates the user back to the settings screen.
+     */
     public void stopMeditationAndReturnToSettings() {
         stopNoDisturbMode();
         if (meditationTimer != null) {
@@ -149,7 +178,6 @@ public class MeditationTimerFragment extends Fragment {
             }
             ((MainActivity) getActivity()).showBottomNav();
         }
-
     }
 
     @Override
