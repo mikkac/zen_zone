@@ -5,8 +5,8 @@
     <string name="title_preferences">Preferences</string>
     <string name="minutes">min</string>
     <string name="stats_btn">Send statistics</string>
-    <string name="current_streak">Your current days streak:</string>
-    <string name="longest_streak">Your longest streak:</string>
+    <string name="current_streak">Your current streak</string>
+    <string name="longest_streak">Your longest streak</string>
     <string name="duration">Duration</string>
     <string name="_1_minute">1 min</string>
     <string name="half_time_audio_notification">Half-time audio notification</string>
@@ -15,4 +15,19 @@
     <string name="pause">Pause</string>
     <string name="play">Play</string>
     <string name="stop">Stop</string>
+    <string name="english">English</string>
+    <string name="polish">Polish</string>
+    <string name="theme">Theme</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="set_reminders">Set reminders</string>
+    <string name="language">Language</string>
+    <string name="reminder">Reminder</string>
+    <string name="monday">M</string>
+    <string name="tuesday">T</string>
+    <string name="wednesday">W</string>
+    <string name="thursday">Th</string>
+    <string name="friday">F</string>
+    <string name="saturday">S</string>
+    <string name="sunday">Su</string>
 </resources>
