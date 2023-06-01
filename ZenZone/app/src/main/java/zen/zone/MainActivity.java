@@ -6,14 +6,15 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.RadioGroup;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.Locale;
@@ -89,10 +90,10 @@ public class MainActivity extends AppCompatActivity {
         long dayDifference = todayInMs - storedTime;
 
         // Check whether today is at least one day from y-day
-        if(dayDifference == 86400000){
+        if (dayDifference == 86400000) {
             currentDayStreak++;
             Toast.makeText(this.getApplicationContext(),
-                    currentDayStreak+" days streak.\nYou are doing great!",
+                    currentDayStreak + " days streak.\nYou are doing great!",
                     Toast.LENGTH_SHORT).show();
         } else {
             currentDayStreak = 1;
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         sharedPrefs = getSharedPreferences("streak", MODE_PRIVATE);
         longestStreak = sharedPrefs.getInt("longestStreak", 0);
 
-        if(streakNow > longestStreak) {
+        if (streakNow > longestStreak) {
             longestStreak = streakNow;
             sharedPrefs.edit()
                     .putInt("longestStreak", longestStreak)

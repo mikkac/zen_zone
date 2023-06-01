@@ -20,8 +20,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/current_streak"
-        android:textStyle="bold"
         android:textSize="12pt"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spaceTOP" />
@@ -50,13 +50,12 @@
         android:id="@+id/longestStreakLbl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
+        android:text="@string/longest_streak"
         android:textSize="12pt"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spaceMID"
-        android:text="@string/longest_streak"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/spaceMID" />
 
     <TextView
         android:id="@+id/tv_longestStreak"
