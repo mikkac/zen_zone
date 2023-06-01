@@ -55,7 +55,7 @@ public class MeditationPreferencesFragment extends Fragment {
         sbMeditationDuration.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                tvMeditationDurationValue.setText(String.format(Locale.getDefault(), "%d %s", progress + 5, getString(R.string.minutes)));
+                tvMeditationDurationValue.setText(String.format(Locale.getDefault(), "%d %s", progress + 2, getString(R.string.minutes)));
             }
 
             @Override
@@ -74,7 +74,7 @@ public class MeditationPreferencesFragment extends Fragment {
             public void onClick(View v) {
                 // Get values from UI elements
                 SeekBar meditationDurationSeekBar = view.findViewById(R.id.seekBar_meditation_length);
-                long meditationDurationMillis = (long) (meditationDurationSeekBar.getProgress() + 5) * 60 * 1000;
+                long meditationDurationMillis = (long) (meditationDurationSeekBar.getProgress() + 2) * 60 * 1000;
 
                 CheckBox halfTimeNotificationCheckBox = view.findViewById(R.id.cb_half_time_notification);
                 boolean halfTimeNotification = halfTimeNotificationCheckBox.isChecked();

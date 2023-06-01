@@ -7,8 +7,6 @@
     tools:context=".ui.meditation.MeditationPreferencesFragment">
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".SettingsFragment">
@@ -22,27 +20,27 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Duration"
+                android:text="@string/duration"
                 android:textSize="18sp" />
 
             <SeekBar
                 android:id="@+id/seekBar_meditation_length"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:max="55"
+                android:max="58"
                 android:progress="0" />
 
             <TextView
                 android:id="@+id/tv_meditation_length_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="5 minutes" />
+                android:text="@string/_2_minutes" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Half-time audio notification"
+                android:text="@string/half_time_audio_notification"
                 android:textSize="18sp" />
 
             <CheckBox
@@ -54,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Background sound"
+                android:text="@string/background_sound"
                 android:textSize="18sp" />
 
             <Spinner
@@ -76,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="32dp"
-                android:text="Start meditation" />
+                android:text="@string/start_meditation" />
 
         </LinearLayout>
     </ScrollView>
