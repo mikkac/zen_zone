@@ -1,16 +1,23 @@
 package zen.zone;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
+import java.util.Locale;
+
 import zen.zone.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setAppLanguage();
+        setAppTheme();
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -41,6 +49,32 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
 
         this.dayStreak();
+    }
+
+    private void setAppLanguage() {
+        SharedPreferences sharedPref = getSharedPreferences("LanguagePref", Context.MODE_PRIVATE);
+
+        // Read the saved language choice
+        String savedLanguage = sharedPref.getString("language", "en"); // default is English
+
+        Locale locale = new Locale(savedLanguage);
+        Resources resources = getResources();
+        Configuration configuration = resources.getConfiguration();
+        configuration.setLocale(locale);
+    }
+
+    private void setAppTheme() {
+        SharedPreferences sharedPref = getSharedPreferences("ThemePref", Context.MODE_PRIVATE);
+
+        // Read the saved theme choice
+        String savedTheme = sharedPref.getString("theme", "light"); // default is light theme
+
+        // Set the theme at startup
+        if (savedTheme.equals("light")) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        } else if (savedTheme.equals("dark")) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
     }
 
     private void dayStreak() {

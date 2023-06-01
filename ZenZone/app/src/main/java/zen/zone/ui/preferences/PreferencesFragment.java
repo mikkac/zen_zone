@@ -1,12 +1,14 @@
 package zen.zone.ui.preferences;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +17,12 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -53,6 +57,8 @@ public class PreferencesFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_preferences, container, false);
 
+        createLanguageChangeListener(view);
+        createThemeChangeListener(view);
         PreferencesViewModel preferencesViewModel =
                 new ViewModelProvider(this).get(PreferencesViewModel.class);
 
@@ -69,19 +75,6 @@ public class PreferencesFragment extends Fragment {
         Button reminderButton = view.findViewById(R.id.button_reminder);
         reminderButton.setOnClickListener(v -> saveReminderSettings());
 
-        ImageButton plButton = view.findViewById(R.id.imageButton_pl);
-        plButton.setOnClickListener(v -> changeLanguage("pl"));
-        ImageButton engButton = view.findViewById(R.id.imageButton_gb);
-        engButton.setOnClickListener(v -> changeLanguage("en"));
-
-        // TODO Handle light/dark theme
-//        TextView theme = view.findViewById(R.id.text_motive);
-//        theme.setText("Theme");
-//        RadioButton light = view.findViewById(R.id.radioButton_light);
-//        light.setText("Light");
-//        RadioButton dark = view.findViewById(R.id.radioButton_dark);
-//        dark.setText("Dark");
-
         MobileAds.initialize(requireContext(), new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {
@@ -92,16 +85,6 @@ public class PreferencesFragment extends Fragment {
         adView.loadAd(adRequest);
 
         return view;
-    }
-
-    private void changeLanguage(String languageCode) {
-        Locale locale = new Locale(languageCode);
-        Resources resources = getResources();
-        Configuration configuration = resources.getConfiguration();
-        configuration.setLocale(locale);
-        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
-
-        restartFragment();
     }
 
     private void restartFragment() {
@@ -161,5 +144,72 @@ public class PreferencesFragment extends Fragment {
             adView.destroy();
         }
         super.onDestroy();
+    }
+
+    private void changeLanguage(String languageCode) {
+        Locale locale = new Locale(languageCode);
+        Resources resources = getResources();
+        Configuration configuration = resources.getConfiguration();
+        configuration.setLocale(locale);
+        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
+
+        restartFragment();
+    }
+
+    private void createLanguageChangeListener(View view) {
+
+        Activity activity = getActivity();
+        if (activity != null) {
+            SharedPreferences sharedPref = activity.getSharedPreferences("LanguagePref", Context.MODE_PRIVATE);
+
+            ImageButton plButton = view.findViewById(R.id.imageButton_pl);
+            plButton.setOnClickListener(v -> {
+                Log.i("MEH", "Set to PL");
+                changeLanguage("pl");
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("language", "pl");
+                editor.apply();
+            });
+
+            ImageButton engButton = view.findViewById(R.id.imageButton_gb);
+            engButton.setOnClickListener(v -> {
+                changeLanguage("en");
+                Log.i("MEH", "Set to EN");
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("language", "en");
+                editor.apply();
+            });
+        }
+    }
+
+    private void createThemeChangeListener(View view) {
+        Activity activity = getActivity();
+        if (activity != null) {
+            RadioGroup radioGroup = view.findViewById(R.id.radioGroup_motive);
+            SharedPreferences sharedPref = activity.getSharedPreferences("ThemePref", Context.MODE_PRIVATE);
+
+            radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    if (checkedId == R.id.radioButton_light) {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                        editor.putString("theme", "light");
+                    } else if (checkedId == R.id.radioButton_dark) {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                        editor.putString("theme", "dark");
+                    }
+                    editor.apply();
+                }
+            });
+
+            String savedTheme = sharedPref.getString("theme", "light"); // default is light theme
+            if (savedTheme.equals("light")) {
+                radioGroup.check(R.id.radioButton_light);
+            } else if (savedTheme.equals("dark")) {
+                radioGroup.check(R.id.radioButton_dark);
+            }
+
+        }
     }
 }
