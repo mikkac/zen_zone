@@ -1,8 +1,12 @@
 package zen.zone.ui.meditation;
 
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -34,7 +38,21 @@ public class MeditationTimerFragment extends Fragment {
     private long totalTimeInMillis;
     private boolean hasHalftimePassed = false;
     private MediaPlayer mediaPlayer;
+    private NotificationManager notificationManager;
+    private int currentInterruptionMode;
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        // Check if we can force no disturb mode during meditation
+        notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (!notificationManager.isNotificationPolicyAccessGranted()) {
+            Intent intent = new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+            startActivity(intent);
+        }
+        super.onCreate(savedInstanceState);
+    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -88,6 +106,7 @@ public class MeditationTimerFragment extends Fragment {
     }
 
     private void startMeditationTimer(long millisUntilFinished, boolean halfTimeNotification) {
+        startNoDisturbMode();
         meditationTimer = new CountDownTimer(millisUntilFinished, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -113,6 +132,7 @@ public class MeditationTimerFragment extends Fragment {
     }
 
     public void stopMeditationAndReturnToSettings() {
+        stopNoDisturbMode();
         if (meditationTimer != null) {
             meditationTimer.cancel();
         }
@@ -170,6 +190,13 @@ public class MeditationTimerFragment extends Fragment {
             }
         });
     }
-Wx`
 
+    private void startNoDisturbMode() {
+        currentInterruptionMode = notificationManager.getCurrentInterruptionFilter();
+        notificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_NONE);
+    }
+
+    private void stopNoDisturbMode() {
+        notificationManager.setInterruptionFilter(currentInterruptionMode);
+    }
 }
