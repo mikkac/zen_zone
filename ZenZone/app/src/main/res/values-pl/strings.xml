@@ -2,8 +2,11 @@
     <string name="app_name">ZenZone</string>
     <string name="title_meditation">Medytacja</string>
     <string name="title_stats">Statystyki</string>
-    <string name="title_preferences">Preferencje</string>
+    <string name="title_preferences">Ustawienia</string>
     <string name="minutes">min</string>
+    <string name="stats_btn">Wyślij statystyki</string>
+    <string name="current_streak">Aktualna liczba dni z medytacją</string>
+    <string name="longest_streak">Twoja najdłuższa passa</string>
     <string name="duration">Długość</string>
     <string name="_1_minute">1 min</string>
     <string name="half_time_audio_notification">Dźwięk w połowie medytacji</string>
@@ -12,4 +15,19 @@
     <string name="pause">Wstrzymaj</string>
     <string name="play">Wznów</string>
     <string name="stop">Zakończ</string>
+    <string name="english">Angielski</string>
+    <string name="polish">Polski</string>
+    <string name="theme">Motyw</string>
+    <string name="light">Jasny</string>
+    <string name="dark">Ciemny</string>
+    <string name="set_reminders">Ustaw przypomnienie</string>
+    <string name="language">Język</string>
+    <string name="reminder">Przypomnienie</string>
+    <string name="monday">Pn</string>
+    <string name="tuesday">Wt</string>
+    <string name="wednesday">Śr</string>
+    <string name="thursday">Czw</string>
+    <string name="friday">Pt</string>
+    <string name="saturday">Sob</string>
+    <string name="sunday">Nd</string>
 </resources>

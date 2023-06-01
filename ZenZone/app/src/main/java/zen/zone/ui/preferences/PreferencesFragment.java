@@ -56,49 +56,31 @@ public class PreferencesFragment extends Fragment {
         PreferencesViewModel preferencesViewModel =
                 new ViewModelProvider(this).get(PreferencesViewModel.class);
 
-        binding = FragmentPreferencesBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
-
-        final TextView textView = binding.textPreferences;
-        preferencesViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-        TextView reminderText = view.findViewById(R.id.reminder);
-        reminderText.setText("Reminder");
-        TextView preferencesText = view.findViewById(R.id.text_preferences);
-        preferencesText.setText("Preferences");
         timeEditText = view.findViewById(R.id.text_reminder);
-        timeEditText.setText("16:00");
         CheckBox monday = view.findViewById(R.id.checkBox_monday);
-        monday.setText("M");
         CheckBox tuesday = view.findViewById(R.id.checkBox_tuesday);
-        tuesday.setText("T");
         CheckBox wednesday = view.findViewById(R.id.checkBox_wednesday);
-        wednesday.setText("W");
         CheckBox thursday = view.findViewById(R.id.checkBox_thursday);
-        thursday.setText("Th");
         CheckBox friday = view.findViewById(R.id.checkBox_friday);
-        friday.setText("F");
         CheckBox saturday = view.findViewById(R.id.checkBox_saturday);
-        saturday.setText("S");
         CheckBox sunday = view.findViewById(R.id.checkBox_sunday);
-        sunday.setText("Su");
-        TextView languageText = view.findViewById(R.id.text_language);
-        languageText.setText("Language");
 
         dayCheckBoxes = new CheckBox[] {monday, tuesday, wednesday, thursday, friday, saturday, sunday};
         Button reminderButton = view.findViewById(R.id.button_reminder);
         reminderButton.setOnClickListener(v -> saveReminderSettings());
 
-        ImageButton plButton = view.findViewById(R.id.imageButton_poland);
+        ImageButton plButton = view.findViewById(R.id.imageButton_pl);
         plButton.setOnClickListener(v -> changeLanguage("pl"));
         ImageButton engButton = view.findViewById(R.id.imageButton_gb);
         engButton.setOnClickListener(v -> changeLanguage("en"));
 
-        TextView theme = view.findViewById(R.id.text_motive);
-        theme.setText("Theme");
-        RadioButton light = view.findViewById(R.id.radioButton_light);
-        light.setText("Light");
-        RadioButton dark = view.findViewById(R.id.radioButton_dark);
-        dark.setText("Dark");
+        // TODO Handle light/dark theme
+//        TextView theme = view.findViewById(R.id.text_motive);
+//        theme.setText("Theme");
+//        RadioButton light = view.findViewById(R.id.radioButton_light);
+//        light.setText("Light");
+//        RadioButton dark = view.findViewById(R.id.radioButton_dark);
+//        dark.setText("Dark");
 
         MobileAds.initialize(requireContext(), new OnInitializationCompleteListener() {
             @Override
