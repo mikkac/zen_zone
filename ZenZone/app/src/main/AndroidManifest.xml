@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
 
     <application
         android:allowBackup="true"
@@ -18,11 +18,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.ZenZone"
-        tools:targetApi="31">
+        tools:targetApi="tiramisu">
         <activity
             android:name=".MainActivity"
-            android:exported="true"
-            android:label="@string/app_name">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -14,13 +14,12 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.RadioButton;
-import android.widget.TextView;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -52,74 +51,15 @@ public class PreferencesFragment extends Fragment {
     @SuppressLint("SetTextI18n")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_preferences, container, false);
 
-        PreferencesViewModel preferencesViewModel =
-                new ViewModelProvider(this).get(PreferencesViewModel.class);
+        loadLanguageAndCreateChangeListener(view);
+        loadThemeAndCreateChangeListener(view);
+        loadRemindersAndCreateChangeListener(view);
 
-        binding = FragmentPreferencesBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
-
-        final TextView textView = binding.textPreferences;
-        preferencesViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-        TextView reminderText = view.findViewById(R.id.reminder);
-        reminderText.setText("Reminder");
-        TextView preferencesText = view.findViewById(R.id.text_preferences);
-        preferencesText.setText("Preferences");
-        timeEditText = view.findViewById(R.id.text_reminder);
-        timeEditText.setText("16:00");
-        CheckBox monday = view.findViewById(R.id.checkBox_monday);
-        monday.setText("M");
-        CheckBox tuesday = view.findViewById(R.id.checkBox_tuesday);
-        tuesday.setText("T");
-        CheckBox wednesday = view.findViewById(R.id.checkBox_wednesday);
-        wednesday.setText("W");
-        CheckBox thursday = view.findViewById(R.id.checkBox_thursday);
-        thursday.setText("Th");
-        CheckBox friday = view.findViewById(R.id.checkBox_friday);
-        friday.setText("F");
-        CheckBox saturday = view.findViewById(R.id.checkBox_saturday);
-        saturday.setText("S");
-        CheckBox sunday = view.findViewById(R.id.checkBox_sunday);
-        sunday.setText("Su");
-        TextView languageText = view.findViewById(R.id.text_language);
-        languageText.setText("Language");
-
-        dayCheckBoxes = new CheckBox[] {monday, tuesday, wednesday, thursday, friday, saturday, sunday};
-        Button reminderButton = view.findViewById(R.id.button_reminder);
-        reminderButton.setOnClickListener(v -> saveReminderSettings());
-
-        ImageButton plButton = view.findViewById(R.id.imageButton_poland);
-        plButton.setOnClickListener(v -> changeLanguage("pl"));
-        ImageButton engButton = view.findViewById(R.id.imageButton_gb);
-        engButton.setOnClickListener(v -> changeLanguage("en"));
-
-        TextView theme = view.findViewById(R.id.text_motive);
-        theme.setText("Theme");
-        RadioButton light = view.findViewById(R.id.radioButton_light);
-        light.setText("Light");
-        RadioButton dark = view.findViewById(R.id.radioButton_dark);
-        dark.setText("Dark");
-
-        MobileAds.initialize(requireContext(), initializationStatus -> {
-        });
-        adView = view.findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
-        new RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("FEE379885695322A91C7073603A68825"));
+        createAds(view);
 
         return view;
-    }
-
-    private void changeLanguage(String languageCode) {
-        Locale locale = new Locale(languageCode);
-        Resources resources = getResources();
-        Configuration configuration = resources.getConfiguration();
-        configuration.setLocale(locale);
-        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
-
-        restartFragment();
     }
 
     private void restartFragment() {
@@ -129,7 +69,7 @@ public class PreferencesFragment extends Fragment {
     private void saveReminderSettings() {
         List<String> selectedDays = new ArrayList<>();
         for (CheckBox checkBox : dayCheckBoxes) {
-            if(checkBox.isChecked()) {
+            if (checkBox.isChecked()) {
                 selectedDays.add(checkBox.getText().toString());
             }
         }
@@ -183,5 +123,120 @@ public class PreferencesFragment extends Fragment {
             adView.destroy();
         }
         super.onDestroy();
+    }
+
+    private void changeLanguage(String languageCode) {
+        Locale locale = new Locale(languageCode);
+        Resources resources = getResources();
+        Configuration configuration = resources.getConfiguration();
+        configuration.setLocale(locale);
+        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
+
+        restartFragment();
+    }
+
+    private void loadLanguageAndCreateChangeListener(View view) {
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("LanguagePref", Context.MODE_PRIVATE);
+
+        ImageButton plButton = view.findViewById(R.id.imageButton_pl);
+        plButton.setOnClickListener(v -> {
+            changeLanguage("pl");
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("language", "pl");
+            editor.apply();
+        });
+
+        ImageButton engButton = view.findViewById(R.id.imageButton_gb);
+        engButton.setOnClickListener(v -> {
+            changeLanguage("en");
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("language", "en");
+            editor.apply();
+        });
+    }
+
+    private void loadThemeAndCreateChangeListener(View view) {
+        RadioGroup radioGroup = view.findViewById(R.id.radioGroup_motive);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("ThemePref", Context.MODE_PRIVATE);
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                SharedPreferences.Editor editor = sharedPref.edit();
+                if (checkedId == R.id.radioButton_light) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    editor.putString("theme", "light");
+                } else if (checkedId == R.id.radioButton_dark) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    editor.putString("theme", "dark");
+                }
+                editor.apply();
+            }
+        });
+
+        String savedTheme = sharedPref.getString("theme", "light"); // default is light theme
+        if (savedTheme.equals("light")) {
+            radioGroup.check(R.id.radioButton_light);
+        } else if (savedTheme.equals("dark")) {
+            radioGroup.check(R.id.radioButton_dark);
+        }
+    }
+
+    private void loadRemindersAndCreateChangeListener(View view) {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("ReminderPrefs", Context.MODE_PRIVATE);
+
+        String selectedDaysString = sharedPreferences.getString("selectedDays", "");
+        String[] selectedDaysArray = selectedDaysString.split(",");
+        List<String> selectedDays = Arrays.asList(selectedDaysArray);  // Konwersja tablicy do listy
+
+        String selectedTime = sharedPreferences.getString("selectedTime", "");
+
+        timeEditText = view.findViewById(R.id.text_reminder);
+        timeEditText.setText(selectedTime);  // Ustawienie wybranego czasu
+
+        CheckBox monday = view.findViewById(R.id.checkBox_monday);
+        monday.setChecked(selectedDays.contains(monday.getText().toString()));  // Ustawienie statusu CheckBoxa
+
+        CheckBox tuesday = view.findViewById(R.id.checkBox_tuesday);
+        tuesday.setChecked(selectedDays.contains(tuesday.getText().toString()));
+
+        CheckBox wednesday = view.findViewById(R.id.checkBox_wednesday);
+        wednesday.setChecked(selectedDays.contains(wednesday.getText().toString()));
+
+        CheckBox thursday = view.findViewById(R.id.checkBox_thursday);
+        thursday.setChecked(selectedDays.contains(thursday.getText().toString()));
+
+        CheckBox friday = view.findViewById(R.id.checkBox_friday);
+        friday.setChecked(selectedDays.contains(friday.getText().toString()));
+
+        CheckBox saturday = view.findViewById(R.id.checkBox_saturday);
+        saturday.setChecked(selectedDays.contains(saturday.getText().toString()));
+
+        CheckBox sunday = view.findViewById(R.id.checkBox_sunday);
+        sunday.setChecked(selectedDays.contains(sunday.getText().toString()));
+
+        dayCheckBoxes = new CheckBox[]{monday, tuesday, wednesday, thursday, friday, saturday, sunday};
+        Button reminderButton = view.findViewById(R.id.button_reminder);
+        reminderButton.setOnClickListener(v -> saveReminderSettings());
+    }
+
+    private void createAds(View view) {
+        // MobileAds.initialize(requireContext(), new OnInitializationCompleteListener() {
+        //     @Override
+        //     public void onInitializationComplete(InitializationStatus initializationStatus) {
+        //     }
+        // });
+        // adView = view.findViewById(R.id.adView);
+        // AdRequest adRequest = new AdRequest.Builder().build();
+        // adView.loadAd(adRequest);
+
+
+
+        MobileAds.initialize(requireContext(), initializationStatus -> {
+        });
+        adView = view.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+        new RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("FEE379885695322A91C7073603A68825"));
     }
 }

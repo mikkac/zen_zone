@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
@@ -26,6 +27,14 @@ import zen.zone.R;
  */
 public class MeditationPreferencesFragment extends Fragment {
 
+    /**
+     * The tag used for logging.
+     */
+    private static final String TAG = MeditationPreferencesFragment.class.getName();
+
+    /**
+     * Default constructor.
+     */
     public MeditationPreferencesFragment() {
         // Required empty public constructor
     }
@@ -40,11 +49,28 @@ public class MeditationPreferencesFragment extends Fragment {
         return new MeditationPreferencesFragment();
     }
 
+    /**
+     * Called when the fragment's activity has been created and this fragment's
+     * view hierarchy instantiated. It can be used to do final initialization once these pieces are in place,
+     * such as retrieving views or restoring state.
+     *
+     * @param savedInstanceState If the fragment is being re-created from a previous saved state, this is the state.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * Called to have the fragment instantiate its user interface view.
+     * This is optional, and non-graphical fragments can return null. This will be called between onCreate(Bundle) and onActivityCreated(Bundle).
+     *
+     * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's UI should be attached to. The fragment should not add the view itself, but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here.
+     *
+     * @return Return the View for the fragment's UI, or null.
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -55,7 +81,7 @@ public class MeditationPreferencesFragment extends Fragment {
         sbMeditationDuration.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                tvMeditationDurationValue.setText(String.format(Locale.getDefault(), "%d %s", progress + 5, getString(R.string.minutes)));
+                tvMeditationDurationValue.setText(String.format(Locale.getDefault(), "%d %s", progress + 1, getString(R.string.minutes)));
             }
 
             @Override
@@ -67,14 +93,13 @@ public class MeditationPreferencesFragment extends Fragment {
             }
         });
 
-
         Button startMeditationButton = view.findViewById(R.id.btn_start_meditation);
         startMeditationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Get values from UI elements
                 SeekBar meditationDurationSeekBar = view.findViewById(R.id.seekBar_meditation_length);
-                long meditationDurationMillis = (long) (meditationDurationSeekBar.getProgress() + 5) * 60 * 1000;
+                long meditationDurationMillis = (long) (meditationDurationSeekBar.getProgress() + 1) * 60 * 1000;
 
                 CheckBox halfTimeNotificationCheckBox = view.findViewById(R.id.cb_half_time_notification);
                 boolean halfTimeNotification = halfTimeNotificationCheckBox.isChecked();
@@ -82,6 +107,9 @@ public class MeditationPreferencesFragment extends Fragment {
                 Spinner backgroundSoundSpinner = view.findViewById(R.id.sp_background_sound);
                 String backgroundSound = backgroundSoundSpinner.getSelectedItem() != null ? backgroundSoundSpinner.getSelectedItem().toString() : "None";
 
+                Log.i(TAG, "meditationDurationMillis = " + meditationDurationMillis);
+                Log.i(TAG, "halfTimeNotification = " + halfTimeNotification);
+                Log.i(TAG, "backgroundSound = " + backgroundSound);
                 // Pass the meditation settings as arguments to the TimerFragment
                 Bundle args = new Bundle();
                 args.putLong("meditationDurationMillis", meditationDurationMillis);
@@ -93,8 +121,6 @@ public class MeditationPreferencesFragment extends Fragment {
                         .navigate(R.id.action_meditationFragment_to_timerFragment, args);
             }
         });
-
-
         return view;
     }
 }

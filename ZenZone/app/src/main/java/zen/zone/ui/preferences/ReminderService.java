@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -23,6 +24,7 @@ public class ReminderService extends Service {
 
     private static final int REMINDER_NOTIFICATION_ID = 1;
     private static final String CHANNEL_ID = "reminder_channel";
+    private static final String TAG = ReminderService.class.getName();
 
     private PendingIntent pendingIntent;
     private AlarmManager alarmManager;
@@ -66,6 +68,7 @@ public class ReminderService extends Service {
 
         String selectedTime = sharedPreferences.getString("selectedTime", "");
 
+        Log.i(TAG, "Selected days: " + selectedDaysString + " & selectedTime: " + selectedTime);
         Calendar calendar = Calendar.getInstance();
         int currentDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -85,18 +88,25 @@ public class ReminderService extends Service {
 
     private int getReminderDayOfWeek(String day) {
         switch (day) {
+            case "Pn":
             case "M":
                 return Calendar.MONDAY;
+            case "Wt":
             case "T":
                 return Calendar.TUESDAY;
+            case "Śr":
             case "W":
                 return Calendar.WEDNESDAY;
+            case "Czw":
             case "Th":
                 return Calendar.THURSDAY;
+            case "Pt":
             case "F":
                 return Calendar.FRIDAY;
+            case "Sob":
             case "S":
                 return Calendar.SATURDAY;
+            case "Nd":
             case "Su":
                 return Calendar.SUNDAY;
             default:
@@ -121,7 +131,7 @@ public class ReminderService extends Service {
                 .setAutoCancel(true);
 
         Intent intent = new Intent(this, MainActivity.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
         builder.setContentIntent(contentIntent);
 
         notificationManager.notify(REMINDER_NOTIFICATION_ID, builder.build());
