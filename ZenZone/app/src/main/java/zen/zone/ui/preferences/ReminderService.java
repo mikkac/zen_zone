@@ -20,6 +20,10 @@ import java.util.Calendar;
 import zen.zone.MainActivity;
 import zen.zone.R;
 
+/**
+ * The ReminderService class is responsible for managing and triggering the user's reminders
+ * in the ZenZone app. It also manages notifications to display the reminders to the user.
+ */
 public class ReminderService extends Service {
 
     private static final int REMINDER_NOTIFICATION_ID = 1;
@@ -31,6 +35,10 @@ public class ReminderService extends Service {
     private SharedPreferences sharedPreferences;
     private NotificationManager notificationManager;
 
+    /**
+     * Android system calls this when creating the service. We use this to setup
+     * any essential resources needed for the service.
+     */
     @Override
     public void onCreate() {
         super.onCreate();
@@ -44,6 +52,10 @@ public class ReminderService extends Service {
         pendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
     }
 
+    /**
+     * The system calls this method when another component requests that the service be started.
+     * Here we show a foreground notification and trigger any due reminders.
+     */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         showForegroundNotification();
@@ -51,6 +63,10 @@ public class ReminderService extends Service {
         return START_STICKY;
     }
 
+    /**
+     * This method shows a foreground notification to inform the user that the app
+     * is running in the background and will notify them when it's time for their reminders.
+     */
     private void showForegroundNotification() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notifications_black_24dp)
@@ -62,6 +78,11 @@ public class ReminderService extends Service {
         startForeground(REMINDER_NOTIFICATION_ID, notification);
     }
 
+    /**
+     * This method checks if there are any due reminders for today based on the current day
+     * and time. If a due reminder is found, it shows a notification for it and stops further checking.
+     * After checking all reminders for today, it schedules the next due reminder.
+     */
     private void triggerReminders() {
         String selectedDaysString = sharedPreferences.getString("selectedDays", "");
         String[] selectedDays = selectedDaysString.split(",");
@@ -86,6 +107,9 @@ public class ReminderService extends Service {
         scheduleNextReminder();
     }
 
+    /**
+     * This method converts the day of week string to a Calendar.DAY_OF_WEEK int value.
+     */
     private int getReminderDayOfWeek(String day) {
         switch (day) {
             case "Pn":
@@ -114,6 +138,9 @@ public class ReminderService extends Service {
         }
     }
 
+    /**
+     * This method checks if the selected reminder time is still due based on the current time.
+     */
     private boolean selectedTimeValid(String selectedTime, int currentHour, int currentMinute) {
         String[] timeParts = selectedTime.split(":");
         int selectedHour = Integer.parseInt(timeParts[0]);
@@ -122,6 +149,9 @@ public class ReminderService extends Service {
         return (selectedHour > currentHour || (selectedHour == currentHour && selectedMinute > currentMinute));
     }
 
+    /**
+     * This method shows a notification to inform the user that it's time for their reminder.
+     */
     private void showNotification() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notifications_black_24dp)
@@ -137,6 +167,9 @@ public class ReminderService extends Service {
         notificationManager.notify(REMINDER_NOTIFICATION_ID, builder.build());
     }
 
+    /**
+     * This method finds the next due reminder and schedules it using the AlarmManager.
+     */
     private void scheduleNextReminder() {
         Calendar calendar = Calendar.getInstance();
         int currentDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
@@ -161,6 +194,10 @@ public class ReminderService extends Service {
         }
     }
 
+    /**
+     * This method finds the day of the next due reminder based on the current day
+     * and time and the selected reminder days and time.
+     */
     private int getNextReminderDay(int currentDayOfWeek, String selectedTime, int currentHour, int currentMinute) {
         String[] timeParts = selectedTime.split(":");
         int selectedHour = Integer.parseInt(timeParts[0]);
@@ -183,6 +220,10 @@ public class ReminderService extends Service {
         return -1;
     }
 
+    /**
+     * This method creates a notification channel for showing the reminder notifications.
+     * This is required for notifications on Android 8.0 (API level 26) and higher.
+     */
     private void createNotificationChannel() {
         NotificationChannel channel = new NotificationChannel(
                 CHANNEL_ID,
@@ -192,6 +233,10 @@ public class ReminderService extends Service {
         notificationManager.createNotificationChannel(channel);
     }
 
+    /**
+     * This is a mandatory method needed for any bound service.
+     * Since this is not a bound service, it simply returns null.
+     */
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {

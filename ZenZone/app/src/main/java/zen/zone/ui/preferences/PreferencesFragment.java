@@ -36,6 +36,13 @@ import java.util.Locale;
 import zen.zone.R;
 import zen.zone.databinding.FragmentPreferencesBinding;
 
+
+/**
+ * The PreferencesFragment class is responsible for managing and rendering
+ * user preferences in the ZenZone app. This includes theme selection,
+ * language selection, and setting up reminders. The fragment also manages
+ * ad displays using the Google Mobile Ads SDK.
+ */
 public class PreferencesFragment extends Fragment {
 
     private FragmentPreferencesBinding binding;
@@ -43,11 +50,19 @@ public class PreferencesFragment extends Fragment {
     private EditText timeEditText;
     private AdView adView;
 
+    /**
+     * Android system calls this when creating the fragment. We use this to setup
+     * any essential resources needed for the fragment.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * The system calls this when it's time for the fragment to draw its user interface
+     * for the first time. In this method, we inflate the layout and setup the view objects.
+     */
     @SuppressLint("SetTextI18n")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -62,10 +77,18 @@ public class PreferencesFragment extends Fragment {
         return view;
     }
 
+    /**
+     * This method restarts the activity to apply the changes in user settings like
+     * theme or language preference.
+     */
     private void restartFragment() {
         requireActivity().recreate();
     }
 
+    /**
+     * This method saves the reminder settings configured by the user including the
+     * selected days and time for the reminders.
+     */
     private void saveReminderSettings() {
         List<String> selectedDays = new ArrayList<>();
         for (CheckBox checkBox : dayCheckBoxes) {
@@ -101,6 +124,10 @@ public class PreferencesFragment extends Fragment {
         }
     }
 
+    /**
+     * System calls this method as the first indication that the user is leaving the fragment.
+     * Here, we pause the AdView to ensure it doesn't remain active when not in view.
+     */
     @Override
     public void onPause() {
         if (adView != null) {
@@ -109,6 +136,10 @@ public class PreferencesFragment extends Fragment {
         super.onPause();
     }
 
+    /**
+     * The system calls this method as the first indication that the user is interacting
+     * with the fragment. Here, we resume the AdView if it was previously paused.
+     */
     @Override
     public void onResume() {
         super.onResume();
@@ -117,6 +148,11 @@ public class PreferencesFragment extends Fragment {
         }
     }
 
+    /**
+     * This method is called when the fragment is no longer in use. This is the place
+     * to finalise all changes and save to permanent storage if required. Here, we
+     * also destroy the AdView.
+     */
     @Override
     public void onDestroy() {
         if (adView != null) {
@@ -125,6 +161,9 @@ public class PreferencesFragment extends Fragment {
         super.onDestroy();
     }
 
+    /**
+     * This method changes the language of the app based on the languageCode provided.
+     */
     private void changeLanguage(String languageCode) {
         Locale locale = new Locale(languageCode);
         Resources resources = getResources();
@@ -135,6 +174,10 @@ public class PreferencesFragment extends Fragment {
         restartFragment();
     }
 
+    /**
+     * This method loads the language preference from the shared preferences and sets
+     * the onClick listeners for the language buttons.
+     */
     private void loadLanguageAndCreateChangeListener(View view) {
         SharedPreferences sharedPref = getActivity().getSharedPreferences("LanguagePref", Context.MODE_PRIVATE);
 
@@ -155,6 +198,10 @@ public class PreferencesFragment extends Fragment {
         });
     }
 
+    /**
+     * This method loads the theme preference from the shared preferences and sets
+     * the onCheckedChangeListener for the theme radio buttons.
+     */
     private void loadThemeAndCreateChangeListener(View view) {
         RadioGroup radioGroup = view.findViewById(R.id.radioGroup_motive);
         SharedPreferences sharedPref = getActivity().getSharedPreferences("ThemePref", Context.MODE_PRIVATE);
@@ -182,6 +229,11 @@ public class PreferencesFragment extends Fragment {
         }
     }
 
+
+    /**
+     * This method loads the reminder preferences from the shared preferences and sets
+     * the onClick listener for the reminder button.
+     */
     private void loadRemindersAndCreateChangeListener(View view) {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("ReminderPrefs", Context.MODE_PRIVATE);
 
@@ -220,6 +272,9 @@ public class PreferencesFragment extends Fragment {
         reminderButton.setOnClickListener(v -> saveReminderSettings());
     }
 
+    /**
+     * This method initializes the MobileAds SDK and creates an AdRequest to load an ad.
+     */
     private void createAds(View view) {
         MobileAds.initialize(requireContext(), initializationStatus -> {
         });
