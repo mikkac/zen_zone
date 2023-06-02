@@ -51,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setAppLanguage();
         setAppTheme();
+        super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
         Resources resources = getResources();
         Configuration configuration = resources.getConfiguration();
         configuration.setLocale(locale);
+        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
     }
 
     /**
