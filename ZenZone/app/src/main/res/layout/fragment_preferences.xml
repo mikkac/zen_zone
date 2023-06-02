@@ -226,7 +226,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="78dp"
         ads:adSize="BANNER"
         ads:adUnitId="ca-app-pub-2965614181564887/6715373899"
         app:layout_constraintBottom_toBottomOf="parent"
