@@ -45,6 +45,7 @@ public class MeditationTimerFragment extends Fragment {
     private MediaPlayer mediaPlayer;
     private NotificationManager notificationManager;
     private int currentInterruptionMode;
+    private boolean forceNoDisturb;
 
     /**
      * Called when the fragment is being created, or when a retained
@@ -89,7 +90,7 @@ public class MeditationTimerFragment extends Fragment {
         totalTimeInMillis = timeLeftInMillis;
         boolean halfTimeNotification = getArguments().getBoolean("halfTimeNotification");
         String backgroundSound = getArguments().getString("backgroundSound");
-
+        forceNoDisturb = !(halfTimeNotification || (!backgroundSound.equals("None") && !backgroundSound.equals("Brak")));
         startMeditationTimer(timeLeftInMillis, halfTimeNotification);
         handleBackgroundSound(backgroundSound);
 
@@ -132,7 +133,7 @@ public class MeditationTimerFragment extends Fragment {
      * @param halfTimeNotification Indicates whether the user wants to be notified when the timer is halfway finished.
      */
     private void startMeditationTimer(long millisUntilFinished, boolean halfTimeNotification) {
-        startNoDisturbMode();
+        if (forceNoDisturb) startNoDisturbMode();
         meditationTimer = new CountDownTimer(millisUntilFinished, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -161,7 +162,7 @@ public class MeditationTimerFragment extends Fragment {
      * Stops the meditation and navigates the user back to the settings screen.
      */
     public void stopMeditationAndReturnToSettings() {
-        stopNoDisturbMode();
+        if (forceNoDisturb) stopNoDisturbMode();
         if (meditationTimer != null) {
             meditationTimer.cancel();
         }

@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
@@ -52,8 +53,8 @@ public class PreferencesFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_preferences, container, false);
 
-        loadLanguageAndCreateChangeListener(view);
         loadThemeAndCreateChangeListener(view);
+        loadLanguageAndCreateChangeListener(view);
         loadRemindersAndCreateChangeListener(view);
 
         createAds(view);
@@ -74,25 +75,29 @@ public class PreferencesFragment extends Fragment {
         }
         String time = timeEditText.getText().toString();
 
-        if (TimeValidator.isValidTime(time)) {
-            SharedPreferences sharedPreferences = this.requireContext().getSharedPreferences("ReminderPrefs", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-
-            StringBuilder daysStringBuilder = new StringBuilder();
-            for (String day : selectedDays) {
-                daysStringBuilder.append(day).append(",");
-            }
-            editor.putString("selectedDays", daysStringBuilder.toString());
-            editor.putString("selectedTime", time);
-            editor.apply();
-
-            Context context = requireContext();
-            Intent intent = new Intent(context, ReminderService.class);
-            context.startForegroundService(intent);
-
-            Toast.makeText(getContext(), "Reminders were set-up!", Toast.LENGTH_SHORT).show();
+        if (selectedDays.size() == 0) {
+            Toast.makeText(requireContext(), "You have to choose at least one day", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(getContext(), "Time format should be HH:MM", Toast.LENGTH_LONG).show();
+            if (TimeValidator.isValidTime(time)) {
+                SharedPreferences sharedPreferences = this.requireContext().getSharedPreferences("ReminderPrefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                StringBuilder daysStringBuilder = new StringBuilder();
+                for (String day : selectedDays) {
+                    daysStringBuilder.append(day).append(",");
+                }
+                editor.putString("selectedDays", daysStringBuilder.toString());
+                editor.putString("selectedTime", time);
+                editor.apply();
+
+                Context context = requireContext();
+                Intent intent = new Intent(context, ReminderService.class);
+                context.startForegroundService(intent);
+
+                Toast.makeText(getContext(), "Reminders were set-up!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "Time format should be HH:MM", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -135,18 +140,18 @@ public class PreferencesFragment extends Fragment {
 
         ImageButton plButton = view.findViewById(R.id.imageButton_pl);
         plButton.setOnClickListener(v -> {
-            changeLanguage("pl");
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString("language", "pl");
             editor.apply();
+            changeLanguage("pl");
         });
 
         ImageButton engButton = view.findViewById(R.id.imageButton_gb);
         engButton.setOnClickListener(v -> {
-            changeLanguage("en");
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString("language", "en");
             editor.apply();
+            changeLanguage("en");
         });
     }
 
@@ -190,25 +195,25 @@ public class PreferencesFragment extends Fragment {
         timeEditText.setText(selectedTime);  // Ustawienie wybranego czasu
 
         CheckBox monday = view.findViewById(R.id.checkBox_monday);
-        monday.setChecked(selectedDays.contains(monday.getText().toString()));  // Ustawienie statusu CheckBoxa
+        monday.setChecked(selectedDays.contains("M") || selectedDays.contains("Pn"));  // Ustawienie statusu CheckBoxa
 
         CheckBox tuesday = view.findViewById(R.id.checkBox_tuesday);
-        tuesday.setChecked(selectedDays.contains(tuesday.getText().toString()));
+        tuesday.setChecked(selectedDays.contains("T") || selectedDays.contains("Wt"));
 
         CheckBox wednesday = view.findViewById(R.id.checkBox_wednesday);
-        wednesday.setChecked(selectedDays.contains(wednesday.getText().toString()));
+        wednesday.setChecked(selectedDays.contains("W") || selectedDays.contains("Śr"));
 
         CheckBox thursday = view.findViewById(R.id.checkBox_thursday);
-        thursday.setChecked(selectedDays.contains(thursday.getText().toString()));
+        thursday.setChecked(selectedDays.contains("Th") || selectedDays.contains("Czw"));
 
         CheckBox friday = view.findViewById(R.id.checkBox_friday);
-        friday.setChecked(selectedDays.contains(friday.getText().toString()));
+        friday.setChecked(selectedDays.contains("F") || selectedDays.contains("Pt"));
 
         CheckBox saturday = view.findViewById(R.id.checkBox_saturday);
-        saturday.setChecked(selectedDays.contains(saturday.getText().toString()));
+        saturday.setChecked(selectedDays.contains("S") || selectedDays.contains("Sob"));
 
         CheckBox sunday = view.findViewById(R.id.checkBox_sunday);
-        sunday.setChecked(selectedDays.contains(sunday.getText().toString()));
+        sunday.setChecked(selectedDays.contains("Su") || selectedDays.contains("Nd"));
 
         dayCheckBoxes = new CheckBox[]{monday, tuesday, wednesday, thursday, friday, saturday, sunday};
         Button reminderButton = view.findViewById(R.id.button_reminder);
@@ -216,13 +221,11 @@ public class PreferencesFragment extends Fragment {
     }
 
     private void createAds(View view) {
-        MobileAds.initialize(requireContext(), new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
+        MobileAds.initialize(requireContext(), initializationStatus -> {
         });
         adView = view.findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
+        new RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("FEE379885695322A91C7073603A68825"));
     }
 }
