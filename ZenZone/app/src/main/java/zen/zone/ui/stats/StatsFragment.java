@@ -26,6 +26,11 @@ import zen.zone.MainActivity;
 import zen.zone.R;
 import zen.zone.databinding.FragmentStatsBinding;
 
+/**
+ * A Fragment that represents the statistics screen in the application.
+ * It shows statistics related to the user's meditation streaks and provides a button
+ * for capturing a screenshot of the statistics and uploading it to Firebase Storage.
+ */
 public class StatsFragment extends Fragment {
 
     private FragmentStatsBinding binding;
@@ -33,16 +38,20 @@ public class StatsFragment extends Fragment {
     private AppCompatTextView longestStreakTV;
     private Bitmap screenshot;
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
+        // Inflate the layout for this fragment using View Binding
         binding = FragmentStatsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        // Find the views from the inflated layout
         Button screenshotButton = root.findViewById(R.id.btn_sendStats);
         currentStreakTV = root.findViewById(R.id.tv_currentStreak);
         longestStreakTV = root.findViewById(R.id.tv_longestStreak);
 
+        // Set the click listener for the screenshot button
         screenshotButton.setOnClickListener(v -> {
             // Capture a screenshot of the fragment's root view
             screenshot = takeScreenshot(root);
@@ -51,10 +60,12 @@ public class StatsFragment extends Fragment {
             FirebaseStorage storage = FirebaseStorage.getInstance();
             StorageReference storageRef = storage.getReference();
 
+            // Get the current date to use as part of the filename
             LocalDate currentDate = LocalDate.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             String formattedDate = currentDate.format(formatter);
 
+            // Create a reference to the screenshot in Firebase Storage
             StorageReference screenshotRef = storageRef.child("statistics/" + formattedDate + ".png");
 
             // Convert the screenshot Bitmap to a byte array
@@ -81,6 +92,7 @@ public class StatsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        // Get the streaks data from MainActivity
         int[] streaksArray = MainActivity.getDaysStreaks();
 
         // Update the TextViews with the values from streaksArray
@@ -91,11 +103,17 @@ public class StatsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        // Clear the View Binding and TextView references when the view is destroyed
         binding = null;
         currentStreakTV = null;
         longestStreakTV = null;
     }
 
+    /**
+     * Takes a screenshot of the provided View and returns it as a Bitmap.
+     * @param view The view to capture a screenshot of.
+     * @return The captured screenshot as a Bitmap.
+     */
     private Bitmap takeScreenshot(View view) {
         Bitmap screenshot = null;
         try {
